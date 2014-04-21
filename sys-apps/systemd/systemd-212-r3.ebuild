@@ -333,9 +333,10 @@ multilib_src_install() {
 	fi
 
 	# install compat pkg-config files
-	local pcfiles=( src/compat-libs/libsystemd-{daemon,id128,journal,login}.pc )
+	local pcfiles=( src/compat-libs/libsystemd-{daemon,id128,login}.pc )
 	emake "${mymakeopts[@]}" install-pkgconfiglibDATA \
 		pkgconfiglib_DATA="${pcfiles[*]}"
+	cp "${FILESDIR}"/journald.conf "${D}"/etc/systemd
 }
 
 multilib_src_install_all() {
