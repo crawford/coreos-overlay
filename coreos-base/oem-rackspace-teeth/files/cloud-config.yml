@@ -8,6 +8,22 @@ coreos:
           [Service]
           ExecStart=
           ExecStart=/usr/bin/coreos-cloudinit --from-configdrive=/media/configdrive --convert-netconf=debian
+      - name: ping-out.service
+        runtime: yes
+        enable: yes
+        content: |
+          [Unit]
+          After=user-config.target
+
+          [Install]
+          WantedBy=user-config.target
+
+          [Service]
+          Type=oneshot
+          RemainAfterExit=yes
+          ExecStart=/usr/bin/sh -c "ping -A -c1 $(ip route | awk '/default/ { print $3 }')"
+      - name: 00-default.link
+        runtime: yes
       - name: media-configdrive.mount
         command: start
         runtime: yes
@@ -15,7 +31,7 @@ coreos:
           [Unit]
           DefaultDependencies=no
           Conflicts=umount.target
-          Before=local-fs.target umount.target
+          Before=user-config.target umount.target
 
           [Mount]
           What=/dev/disk/by-label/config-2
