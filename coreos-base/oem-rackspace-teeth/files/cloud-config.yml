@@ -1,5 +1,19 @@
 #cloud-config
 
+write_files:
+  - path: /run/udev/rules.d/79-netname.rules
+    permissions: 444
+    content: |
+      SUBSYSTEM!="net", GOTO="netname_end"
+      ACTION!="add", GOTO="netname_end"
+      ATTR{address}=="00:00:00:00:00:00", GOTO="netname_end"
+
+      IMPORT{program}="/usr/share/oem/bin/netname.sh $kernel"
+
+      NAME=="", ENV{ID_NET_NAME_SIMPLE}!="", NAME="$env{ID_NET_NAME_SIMPLE}"
+
+      LABEL="netname_end"
+
 coreos:
     units:
       - name: user-configdrive.service.d/netconf.conf
@@ -27,13 +41,14 @@ coreos:
         runtime: yes
         content: |
           [Unit]
-          ConditionPathExists=!/etc/systemd/network/00-default.link
           Before=user-config.target
 
           [Service]
           Type=oneshot
-          ExecStart=/usr/bin/touch /etc/systemd/network/00-default.link
-          ExecStart=/usr/sbin/reboot
+          ExecStart=/usr/bin/systemctl stop systemd-networkd
+          ExecStart=/usr/bin/ip link set ens3 down
+          ExecStart=/usr/bin/udevadm trigger --subsystem-match=net --action=add
+          ExecStart=/usr/bin/systemctl start systemd-networkd
       - name: media-configdrive.mount
         command: start
         runtime: yes
