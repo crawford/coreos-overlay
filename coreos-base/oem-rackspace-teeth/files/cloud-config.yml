@@ -22,8 +22,18 @@ coreos:
           Type=oneshot
           RemainAfterExit=yes
           ExecStart=/usr/bin/sh -c "ping -A -c1 $(ip route | awk '/default/ { print $3 }')"
-      - name: 00-default.link
+      - name: rename-network-interfaces.service
+        command: start
         runtime: yes
+        content: |
+          [Unit]
+          ConditionPathExists=!/etc/systemd/network/00-default.link
+          Before=user-config.target
+
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/bin/touch /etc/systemd/network/00-default.link
+          ExecStart=/usr/sbin/reboot
       - name: media-configdrive.mount
         command: start
         runtime: yes
