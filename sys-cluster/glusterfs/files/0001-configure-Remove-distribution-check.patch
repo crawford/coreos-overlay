@@ -1,0 +1,39 @@
+From 746d62a31c981c7c885ced2506410afa86b487c4 Mon Sep 17 00:00:00 2001
+From: Alex Crawford <alex.crawford@coreos.com>
+Date: Wed, 12 Nov 2014 10:09:34 -0800
+Subject: [PATCH] configure: Remove distribution check
+
+---
+ configure.ac | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index cc616ae..fb5f554 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -330,21 +330,7 @@ fi
+ 
+ # Check the distribution where you are compiling glusterfs on 
+ 
+-GF_DISTRIBUTION=
+-AC_CHECK_FILE([/etc/debian_version])
+-AC_CHECK_FILE([/etc/SuSE-release])
+-AC_CHECK_FILE([/etc/redhat-release])
+-
+-if test "x$ac_cv_file__etc_debian_version" = "xyes"; then
+-   GF_DISTRIBUTION=Debian
+-fi
+-if test "x$ac_cv_file__etc_SuSE_release" = "xyes"; then
+-   GF_DISTRIBUTION=SuSE
+-fi
+-if test "x$ac_cv_file__etc_redhat_release" = "xyes"; then
+-   GF_DISTRIBUTION=Redhat
+-fi
+-
++GF_DISTRIBUTION=CoreOS
+ AC_SUBST(GF_DISTRIBUTION)
+ 
+ GF_HOST_OS=""
+-- 
+1.8.5.5
+
