@@ -1,7 +1,7 @@
-From 6277cf00738caf83ca65147c4b0af06c3ed8a00a Mon Sep 17 00:00:00 2001
+From e82991bec2c33257c9b29a003e9a8b86f15152ad Mon Sep 17 00:00:00 2001
 From: Josh Boyer <jwboyer@fedoraproject.org>
 Date: Tue, 27 Aug 2013 13:28:43 -0400
-Subject: [PATCH 11/21] efi: Make EFI_SECURE_BOOT_SIG_ENFORCE depend on EFI
+Subject: [PATCH 10/20] efi: Make EFI_SECURE_BOOT_SIG_ENFORCE depend on EFI
 
 The functionality of the config option is dependent upon the platform being
 UEFI based.  Reflect this in the config deps.

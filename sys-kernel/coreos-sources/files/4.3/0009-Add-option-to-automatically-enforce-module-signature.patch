@@ -1,7 +1,7 @@
-From 354ecea4775bda0643a9b2ef5d45e67e046ddb9a Mon Sep 17 00:00:00 2001
+From 184ab78297a9087eff72771ad87e089bf4b4f62f Mon Sep 17 00:00:00 2001
 From: Matthew Garrett <matthew.garrett@nebula.com>
 Date: Fri, 9 Aug 2013 18:36:30 -0400
-Subject: [PATCH 10/21] Add option to automatically enforce module signatures
+Subject: [PATCH 09/20] Add option to automatically enforce module signatures
  when in Secure Boot mode
 
 UEFI Secure Boot provides a mechanism for ensuring that the firmware will
@@ -17,8 +17,8 @@ Signed-off-by: Matthew Garrett <matthew.garrett@nebula.com>
  arch/x86/include/uapi/asm/bootparam.h |  3 ++-
  arch/x86/kernel/setup.c               |  6 ++++++
  include/linux/module.h                |  6 ++++++
- kernel/module.c                       |  7 +++++++
- 7 files changed, 69 insertions(+), 1 deletion(-)
+ kernel/module.c                       | 17 +++++++++++++++++
+ 7 files changed, 79 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/x86/zero-page.txt b/Documentation/x86/zero-page.txt
 index 95a4d34..b8527c6 100644
@@ -130,7 +130,7 @@ index 3292543..b61f853 100644
  	 * The sentinel is set to a nonzero value (0xff) in header.S.
  	 *
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index a3cccbf..bddbfa7 100644
+index 37c8ea8..eddb9aa 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
 @@ -1135,6 +1135,12 @@ void __init setup_arch(char **cmdline_p)
@@ -147,7 +147,7 @@ index a3cccbf..bddbfa7 100644
  	 * Parse the ACPI tables for possible boot-time SMP configuration.
  	 */
 diff --git a/include/linux/module.h b/include/linux/module.h
-index db38634..4b8df91 100644
+index 3a19c79..70b82d3 100644
 --- a/include/linux/module.h
 +++ b/include/linux/module.h
 @@ -273,6 +273,12 @@ const struct exception_table_entry *search_exception_tables(unsigned long add);
@@ -164,13 +164,14 @@ index db38634..4b8df91 100644
  
  extern int modules_disabled; /* for sysctl */
 diff --git a/kernel/module.c b/kernel/module.c
-index 58e636c..6dd2bb3 100644
+index 8f051a1..6dd2bb3 100644
 --- a/kernel/module.c
 +++ b/kernel/module.c
-@@ -4092,6 +4092,13 @@ void module_layout(struct module *mod,
+@@ -4091,3 +4091,20 @@ void module_layout(struct module *mod,
+ }
  EXPORT_SYMBOL(module_layout);
  #endif
- 
++
 +#ifdef CONFIG_MODULE_SIG
 +void enforce_signed_modules(void)
 +{
@@ -178,9 +179,15 @@ index 58e636c..6dd2bb3 100644
 +}
 +#endif
 +
- bool secure_modules(void)
- {
- #ifdef CONFIG_MODULE_SIG
++bool secure_modules(void)
++{
++#ifdef CONFIG_MODULE_SIG
++	return (sig_enforce || modules_disabled);
++#else
++	return modules_disabled;
++#endif
++}
++EXPORT_SYMBOL(secure_modules);
 -- 
 2.4.10
 

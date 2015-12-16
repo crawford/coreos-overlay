@@ -1,7 +1,7 @@
-From 7e806ccf4d8426a9247aaf5b1652f6e8c15658a4 Mon Sep 17 00:00:00 2001
+From 82171c2d1e839561f1f00bf2628f876cdbcb49d6 Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Tue, 16 Jun 2015 14:14:32 +0100
-Subject: [PATCH 16/21] SELinux: Stub in copy-up handling
+Subject: [PATCH 15/20] SELinux: Stub in copy-up handling
 
 Provide stubs for union/overlay copy-up handling.  The xattr copy up stub
 discards lower SELinux xattrs rather than letting them be copied up so that

@@ -1,7 +1,7 @@
-From 8fdb5e7ddc542c21fd28922fe9aa59581b67c895 Mon Sep 17 00:00:00 2001
+From 8cb31ff8db18dfc514e04044b26498c274bb720a Mon Sep 17 00:00:00 2001
 From: Vito Caputo <vito.caputo@coreos.com>
 Date: Mon, 19 Oct 2015 17:53:12 -0700
-Subject: [PATCH 20/21] overlayfs: use a minimal buffer in ovl_copy_xattr
+Subject: [PATCH 19/20] overlayfs: use a minimal buffer in ovl_copy_xattr
 
 Rather than always allocating the high-order XATTR_SIZE_MAX buffer
 which is costly and prone to failure, only allocate what is needed and

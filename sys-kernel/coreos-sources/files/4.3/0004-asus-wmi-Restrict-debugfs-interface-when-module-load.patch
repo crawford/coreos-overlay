@@ -1,7 +1,7 @@
-From 09ffe104e8f518b7085638480a098f63ca36a346 Mon Sep 17 00:00:00 2001
+From b5a5138c7fc7801a3c4cd2d3df34e6775e4b1dd2 Mon Sep 17 00:00:00 2001
 From: Matthew Garrett <matthew.garrett@nebula.com>
 Date: Fri, 9 Mar 2012 08:46:50 -0500
-Subject: [PATCH 05/21] asus-wmi: Restrict debugfs interface when module
+Subject: [PATCH 04/20] asus-wmi: Restrict debugfs interface when module
  loading is restricted
 
 We have no way of validating what all of the Asus WMI methods do on a
